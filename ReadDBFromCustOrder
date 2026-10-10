@@ -1,0 +1,34 @@
+import os
+import requests
+from dotenv import load_dotenv
+
+# 1. Load your variables from the .env file
+load_dotenv("supabasedb.env")
+key = os.getenv("SUPABASE_KEY")
+
+# 2. Define the exact REST endpoint
+url = "https://kksxthprmywqefvnsbkd.supabase.co/rest/v1/customer_order"
+
+# 3. Set up the required headers for PostgREST
+# You must pass the key as both the 'apikey' and the 'Authorization' Bearer token
+headers = {
+    "apikey": key,
+    "Authorization": f"Bearer {key}",
+    "Accept": "application/json"
+}
+
+# 4. Optional: If you only want specific columns, you can pass them as parameters. 
+# "select=*" means get all columns.
+params = {
+    "select": "*"
+}
+
+# 5. Make the GET request
+response = requests.get(url, headers=headers, params=params)
+
+# 6. Print the raw JSON output
+if response.status_code == 200:
+    print("Success! Here is the JSON data:")
+    print(response.json())
+else:
+    print(f"Error {response.status_code}: {response.text}")

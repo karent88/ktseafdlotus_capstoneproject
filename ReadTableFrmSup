@@ -1,0 +1,14 @@
+@app.route('/')
+def index():
+    try:
+        response = supabase.table('instruments').select("*").execute()
+    except APIError as error:
+        return f'<p>Error loading instruments: {error.message}</p>'
+    instruments = response.data
+    html = '<h1>Instruments</h1><ul>'
+    for instrument in instruments:
+        html += f'<li>{instrument["name"]}</li>'
+    html += '</ul>'
+    return html
+if __name__ == '__main__':
+    app.run(debug=True)
